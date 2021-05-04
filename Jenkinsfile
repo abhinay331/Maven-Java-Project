@@ -1,4 +1,4 @@
-def remote = [:]
+ def remote = [:]
          remote.name = 'ansible'
          remote.host = '172.31.7.119'
          remote.user = 'root'
@@ -20,11 +20,12 @@ pipeline {
 
     stages {
         stage('Prepare-Workspace'){
-            steps{
+            steps {
                 // Get some code from a GitHub repository
                 git credentialsId: 'github', url: 'https://github.com/abhinay331/Maven-Java-Project.git'    
-		stash 'Source'
+		        stash 'Source'
             }
+        }
         stage('Setup Tools'){
             steps{
                 sshCommand remote: remote, command: 'cd Maven-Java-Project; git pull'
@@ -33,9 +34,8 @@ pipeline {
 
                 //K8s Setup
                 sshCommand remote: remote1, command: "cd Maven-Java-Project; git pull"
-	        sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/staging/namespace/staging-ns.yml"
+	            sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/staging/namespace/staging-ns.yml"
     	        sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/prod/namespace/prod-ns.yml"            
-                }
             }
         }
     }
