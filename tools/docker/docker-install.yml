@@ -57,7 +57,7 @@
 
     - name: Add user centos to docker group
       user:
-        name: centos
+        name: ec2-user
         groups: docker
         append: yes
       become: yes
