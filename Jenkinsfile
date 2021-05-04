@@ -1,6 +1,6 @@
  def remote = [:]
          remote.name = 'ansible'
-         remote.host = '172.31.7.119'
+         remote.host = '172.31.3.60'
          remote.user = 'root'
          remote.password = 'root'
          remote.allowAnyHosts = true
