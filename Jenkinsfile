@@ -25,7 +25,7 @@ pipeline {
                 git credentialsId: 'github', url: 'https://github.com/abhinay331/Maven-Java-Project.git'    
 		stash 'Source'
             }
-      stage('Setup Tools'){
+        stage('Setup Tools'){
             steps{
                 sshCommand remote: ansible, command: 'cd Maven-Java-Project; git pull'
                 sshCommand remote: ansible, command: 'cd Maven-Java-Project; ansible-playbook -i hosts tools/sonarqube/sonar-install.yaml'
