@@ -2,14 +2,14 @@ def mvnHome
 def remote = [:]
          remote.name = 'ansible'
          remote.host = '172.31.36.190'
-         remote.user = 'centos'
-         remote.password = 'Rnstech@123'
+         remote.user = 'root'
+         remote.password = 'root'
          remote.allowAnyHosts = true
 def remote1 = [:]
     	remote1.name = 'kops'
     	remote1.host = '172.31.36.46'
-    	remote1.user = 'centos'
-    	remote1.password = 'Rnstech@123'
+    	remote1.user = 'root'
+    	remote1.password = 'root'
     	remote1.allowAnyHosts = true
 
 pipeline {
@@ -19,10 +19,10 @@ pipeline {
         stage('Prepare Workspace') {
             steps {
                 // Get src code from a GitHub repository
-                git credentialsId: 'Github_un_pwd', url: 'https://github.com/venkat09docs/Maven-Java-Project.git'
+                git credentialsId: 'github', url: 'https://github.com/abhinay331/Maven-Java-Project.git'
                 stash 'Source'
                 script{
-                    mvnHome = tool name: 'maven3', type: 'maven'
+                    mvnHome = tool name: 'maven38', type: 'maven'
                 }      
             }   
         }
