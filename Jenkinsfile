@@ -1,6 +1,7 @@
 pipeline {
-    agent { label: 'slave' }
-    
+    agent {
+        label 'Slave'
+    }
     stages{
         stage('Prepare Workspace') {
             steps {
