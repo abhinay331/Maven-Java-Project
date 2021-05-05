@@ -38,5 +38,39 @@ pipeline {
     	        sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/prod/namespace/prod-ns.yml"            
             }
         }
+	stage('SonarQube analysis') {
+          steps{
+                echo "Sonar Scanner"
+                  sh "mvn clean compile"
+                withSonarQubeEnv('sonar-7.4') { 
+                  sh "mvn sonar:sonar "
+                }                     
+          }
+      }
+      
+      stage('Unit Test Cases') {
+         
+          steps{
+              sh "mvn clean test"  
+          }
+          post{
+              success{
+                  junit 'target/surefire-reports/*.xml'
+              }
+          }
+      }
+      
+       stage('Build Code') {
+                steps{
+	      unstash 'Source'
+              sh "mvn clean package"  
+          }
+          post{
+              success{
+                  archiveArtifacts '**/*.war'
+              }
+          }
+      }
+          
     }
 }
