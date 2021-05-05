@@ -1,13 +1,13 @@
 def mvnHome
 def remote = [:]
          remote.name = 'ansible'
-         remote.host = '172.31.36.190'
+         remote.host = '172.31.3.60'
          remote.user = 'root'
          remote.password = 'root'
          remote.allowAnyHosts = true
 def remote1 = [:]
     	remote1.name = 'kops'
-    	remote1.host = '172.31.36.46'
+    	remote1.host = '172.31.6.45'
     	remote1.user = 'root'
     	remote1.password = 'root'
     	remote1.allowAnyHosts = true
