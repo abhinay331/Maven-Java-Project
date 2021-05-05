@@ -46,18 +46,14 @@ pipeline {
           }
       } 
     stage('Build Docker Image') {
-         agent {
-                  label 'Slave'
-         }
+
          steps{
                   sh "docker build -t abhinay331/mainproject ."  
          }
      }
      
      stage('Publish Docker Image') {
-         agent {
-                  label 'Slave'
-         }
+
     steps{
 
     	withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
