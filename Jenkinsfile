@@ -1,3 +1,10 @@
+def remote1 = [:]
+    	remote1.name = 'kops'
+    	remote1.host = '172.31.6.45'
+    	remote1.user = 'ec2-user'
+    	remote1.password = 'root'
+    	remote1.allowAnyHosts = true
+
 pipeline {
     agent {
         label 'slave'
@@ -62,5 +69,40 @@ pipeline {
         	sh "docker push abhinay331/mainproject"
     }
     }
+    stage('Deploy to Staging') {
+	
+	steps{
+	      //Deploy to K8s Cluster 
+              echo "Deploy to Staging Server"
+	      sshCommand remote: remote1, command: "cd Maven-Java-Project; git pull"
+	      sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/staging/app/."
+	}		    
+    }
+    stage ('Integration-Test') {
+	
+	steps {
+             echo "Run Integration Test Cases"
+             unstash 'Source'
+             sh "mvn clean verify"
+        }
+    }
+    stage ('approve') {
+	
+	steps {
+		echo "Approval State"
+                timeout(time: 7, unit: 'DAYS') {                    
+			input message: 'Do you want to deploy?', submitter: 'admin'
+		}
+	}
+     }	
+    stage ('Prod-Deploy') {
+	
+	steps{
+              echo "Deploy to Production"
+	      //Deploy to Prod K8s Cluster
+	      sshCommand remote: remote1, command: "cd Maven-Java-Project; git pull"
+	      sshCommand remote: remote1, command: "kubectl apply -f Maven-Java-Project/k8s-code/prod/app/."
+	}
+	}	    
     }
 }                    
